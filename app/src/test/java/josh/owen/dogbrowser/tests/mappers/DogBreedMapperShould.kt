@@ -25,11 +25,12 @@ class DogBreedMapperShould : BaseUnitTest() {
             Pair(dogBreed2, listOf()),
             Pair(dogBreed3, listOf()),
             Pair(dogBreed4, listOf(subBreed1)),
-        ), true)
+        ), true
+    )
 
     private val mappedResponse = mapper.invoke(preProcessedApiResponse)
 
-    private val expectedResponse : List<DogBreed> = listOf(
+    private val expectedResponse: List<DogBreed> = listOf(
         DogBreed(dogBreed1, listOf()),
         DogBreed(dogBreed2, listOf()),
         DogBreed(dogBreed3, listOf()),
@@ -49,28 +50,28 @@ class DogBreedMapperShould : BaseUnitTest() {
     @Test
     fun doesMapCorrectDog1() {
         assertEquals(
-            expectedResponse.find { it.breedName == dogBreed1},
-            mappedResponse.find { it.breedName == dogBreed1})
+            expectedResponse.find { it.breedName == dogBreed1 },
+            mappedResponse.find { it.breedName == dogBreed1 })
     }
 
     @Test
     fun doesMapCorrectDog2() {
         assertEquals(
-            expectedResponse.find { it.breedName == dogBreed2},
-            mappedResponse.find { it.breedName == dogBreed2})
+            expectedResponse.find { it.breedName == dogBreed2 },
+            mappedResponse.find { it.breedName == dogBreed2 })
     }
 
     @Test
     fun doesMapCorrectDog3() {
         assertEquals(
-            expectedResponse.find { it.breedName == dogBreed3},
-            mappedResponse.find { it.breedName == dogBreed3})
+            expectedResponse.find { it.breedName == dogBreed3 },
+            mappedResponse.find { it.breedName == dogBreed3 })
     }
 
     @Test
     fun doesMapCorrectDog4() {
         assertEquals(
-            expectedResponse.find { it.breedName == dogBreed4},
-            mappedResponse.find { it.breedName == dogBreed4})
+            expectedResponse.find { it.breedName == dogBreed4 },
+            mappedResponse.find { it.breedName == dogBreed4 })
     }
 }

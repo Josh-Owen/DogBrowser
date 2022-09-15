@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class DogRepositoryImpl @Inject constructor(
     private val dogApi: DogAPI,
-    private val dogBreedMapper : DogBreedMapper,
+    private val dogBreedMapper: DogBreedMapper,
     private val subBreedMapper: SubBreedMapper
 ) : DogRepository {
 

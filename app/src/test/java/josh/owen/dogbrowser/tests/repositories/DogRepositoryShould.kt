@@ -29,11 +29,11 @@ class DogRepositoryShould : BaseUnitTest() {
 
     //region Variables & Class Members
 
-    private lateinit var repository : DogRepositoryImpl
+    private lateinit var repository: DogRepositoryImpl
 
-    private val dogBreedMapper : DogBreedMapper = mock()
+    private val dogBreedMapper: DogBreedMapper = mock()
 
-    private val subBreedMapper : SubBreedMapper = mock()
+    private val subBreedMapper: SubBreedMapper = mock()
 
     private val api: DogAPI = mock()
 
@@ -41,20 +41,20 @@ class DogRepositoryShould : BaseUnitTest() {
 
     private val expectedDogBreedNamesAPIResponseRaw: DogBreedsApiResponse = mock()
 
-    private val expectedListOfDogBreeds : List<DogBreed> = mock()
+    private val expectedListOfDogBreeds: List<DogBreed> = mock()
 
     private val expectedDogBreedNamesResponse: Response<DogBreedsApiResponse> =
         Response.success(expectedDogBreedNamesAPIResponseRaw)
 
-    private val listOfDogImageUrls : List<SubBreed> = mock()
+    private val listOfDogImageUrls: List<SubBreed> = mock()
 
-    private val dogBreedImagesExpectedResponse : DogBreedImagesApiResponse = mock()
+    private val dogBreedImagesExpectedResponse: DogBreedImagesApiResponse = mock()
 
     private val expectedDogBreedImagesResponse: Response<DogBreedImagesApiResponse> =
         Response.success(dogBreedImagesExpectedResponse)
 
-    private val apiSuccessCode : Int = 200
-    private val apiErrorCode : Int = 420
+    private val apiSuccessCode: Int = 200
+    private val apiErrorCode: Int = 420
 
     private val specifiedDogBreed = "Dachshund"
 
@@ -96,7 +96,7 @@ class DogRepositoryShould : BaseUnitTest() {
     fun doesFetchSpecifiedDogBreedImagesPropagateSuccessfulResponse() = runTest {
         fetchSpecifiedDogBreedImagesSuccess()
         val response = repository.fetchSpecifiedBreedImages(specifiedDogBreed).first()
-            assertTrue(response is ApiSuccess && response.data == listOfDogImageUrls)
+        assertTrue(response is ApiSuccess && response.data == listOfDogImageUrls)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

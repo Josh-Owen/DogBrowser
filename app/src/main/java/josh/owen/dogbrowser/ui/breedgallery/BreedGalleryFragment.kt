@@ -1,7 +1,6 @@
 package josh.owen.dogbrowser.ui.breedgallery
 
 import android.view.LayoutInflater
-import androidx.core.graphics.TypefaceCompat.clearCache
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -9,7 +8,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseFragment

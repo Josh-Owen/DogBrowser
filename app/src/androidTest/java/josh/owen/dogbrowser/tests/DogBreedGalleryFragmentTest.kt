@@ -43,8 +43,16 @@ class DogBreedGalleryFragmentTest : BaseUITest() {
     @Test
     fun doesDisplayCorrectSelectionFormatText() {
         navigateToSelectedBreedGallery()
-        val resources: Resources = InstrumentationRegistry.getInstrumentation().targetContext.resources
-        assertDisplayed(String.format(resources.getString(R.string.breed_gallery_selected_breed, selectedDogBreed)))
+        val resources: Resources =
+            InstrumentationRegistry.getInstrumentation().targetContext.resources
+        assertDisplayed(
+            String.format(
+                resources.getString(
+                    R.string.breed_gallery_selected_breed,
+                    selectedDogBreed
+                )
+            )
+        )
     }
 
     @Test

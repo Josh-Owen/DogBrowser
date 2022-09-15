@@ -32,11 +32,11 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
 
     private val selectedDogBreed = "Dachshund"
 
-    private val expectedSubBreedResponse : List<SubBreed> = mock()
+    private val expectedSubBreedResponse: List<SubBreed> = mock()
 
-    private val genericNetworkMessage : String = "Generic Network Message"
+    private val genericNetworkMessage: String = "Generic Network Message"
 
-    private val apiErrorMessage : String = "Api Error"
+    private val apiErrorMessage: String = "Api Error"
 
     private val genericRuntimeException = RuntimeException(genericNetworkMessage)
 
@@ -72,6 +72,7 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
             cancelAndConsumeRemainingEvents()
         }
     }
+
     @Test
     fun isSuccessfulStatePropagated() = runBlocking(testDispatchers.io) {
         mockSuccessfulCase()

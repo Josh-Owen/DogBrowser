@@ -30,13 +30,13 @@ class BreedListFragmentVMShould : BaseUnitTest() {
     private lateinit var viewModel: BreedsListFragmentVM
 
 
-    private val genericNetworkMessage : String = "Generic Network Message"
+    private val genericNetworkMessage: String = "Generic Network Message"
 
-    private val apiErrorMessage : String = "Api Error"
+    private val apiErrorMessage: String = "Api Error"
 
     private val genericRuntimeException = RuntimeException(genericNetworkMessage)
 
-    private val expectedBreedNamesResponse : List<DogBreed> = mock()
+    private val expectedBreedNamesResponse: List<DogBreed> = mock()
 
     //endregion
 
@@ -58,6 +58,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
             cancelAndConsumeRemainingEvents()
         }
     }
+
     @Test
     fun isSuccessfulStatePropagated() = runBlocking(testDispatchers.io) {
         mockSuccessfulCase()

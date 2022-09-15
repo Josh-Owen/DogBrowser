@@ -3,28 +3,24 @@ package josh.owen.dogbrowser.tests
 import android.view.View
 import android.widget.ProgressBar
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.filters.LargeTest
-import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions
 import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import josh.owen.dogbrowser.core.base.BaseUITest
-import org.junit.Test
 import josh.owen.dogbrowser.R
+import josh.owen.dogbrowser.core.base.BaseUITest
 import josh.owen.dogbrowser.dispatchers.ErrorDispatcher
-import josh.owen.dogbrowser.dispatchers.SuccessDispatcher
 import josh.owen.dogbrowser.utils.nthChildOf
 import josh.owen.dogbrowser.utils.views.ViewVisibilityIdlingResource
 import org.hamcrest.core.AllOf
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.RuleChain
 
 @HiltAndroidTest

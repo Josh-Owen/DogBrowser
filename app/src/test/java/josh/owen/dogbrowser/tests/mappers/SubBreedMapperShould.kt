@@ -24,7 +24,18 @@ class SubBreedMapperShould : BaseUnitTest() {
 
 
     private val preProcessedUrls =
-        listOf(dogImageURL0, dogImageURL1, dogImageURL2, dogImageURL3, dogImageURL4, dogImageURL5, dogImageURL6,dogImageURL7,dogImageURL8,dogImageURL9)
+        listOf(
+            dogImageURL0,
+            dogImageURL1,
+            dogImageURL2,
+            dogImageURL3,
+            dogImageURL4,
+            dogImageURL5,
+            dogImageURL6,
+            dogImageURL7,
+            dogImageURL8,
+            dogImageURL9
+        )
 
 
     private val preProcessedApiResponse: DogBreedImagesApiResponse =
@@ -69,6 +80,7 @@ class SubBreedMapperShould : BaseUnitTest() {
     fun doesMapUrl2Correctly() {
         assertTrue(preProcessedUrls[2] == expectedResponse[2].url)
     }
+
     @Test
     fun doesMapUrl3Correctly() {
         assertTrue(preProcessedUrls[3] == expectedResponse[3].url)
@@ -78,22 +90,27 @@ class SubBreedMapperShould : BaseUnitTest() {
     fun doesMapUrl4Correctly() {
         assertTrue(preProcessedUrls[4] == expectedResponse[4].url)
     }
+
     @Test
     fun doesMapUrl5Correctly() {
         assertTrue(preProcessedUrls[5] == expectedResponse[5].url)
     }
+
     @Test
     fun doesMapUrl6Correctly() {
         assertTrue(preProcessedUrls[6] == expectedResponse[6].url)
     }
+
     @Test
     fun doesMapUrl7Correctly() {
         assertTrue(preProcessedUrls[7] == expectedResponse[7].url)
     }
+
     @Test
     fun doesMapUrl8Correctly() {
         assertTrue(preProcessedUrls[8] == expectedResponse[8].url)
     }
+
     @Test
     fun doesMapUrl9Correctly() {
         assertTrue(preProcessedUrls[9] == expectedResponse[9].url)
