@@ -4,18 +4,21 @@ import android.content.res.Resources
 import android.view.View
 import android.widget.ProgressBar
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
-import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions
 import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import josh.owen.dogbrowser.R
+import josh.owen.dogbrowser.core.SELECTED_BREED
 import josh.owen.dogbrowser.core.base.BaseUITest
+import josh.owen.dogbrowser.dispatchers.ErrorDispatcher
+import josh.owen.dogbrowser.dispatchers.LoadGalleryErrorDispatcher
 import josh.owen.dogbrowser.utils.nthChildOf
 import josh.owen.dogbrowser.utils.views.ViewVisibilityIdlingResource
 import org.hamcrest.core.AllOf
@@ -27,14 +30,13 @@ import org.junit.rules.RuleChain
 @LargeTest
 class BreedGalleryFragmentTest : BaseUITest() {
 
+    //region Variables & Class Members
     @get:Rule
     var hiltRule: RuleChain = RuleChain.outerRule(HiltAndroidRule(this)).around(activityRule)
 
-
-    private val selectedDogBreed = "affenpinscher"
+    //endregion
 
     //region Tests
-
 
     @Test
     fun doesDisplayScreenTitle() {
@@ -51,7 +53,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
             String.format(
                 resources.getString(
                     R.string.breed_gallery_selected_breed,
-                    selectedDogBreed
+                    SELECTED_BREED
                 )
             )
         )
@@ -59,6 +61,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
 
     @Test
     fun doesDisplayProgressBar() {
+        navigateToSelectedBreedGallery()
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
@@ -71,6 +74,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
 
     @Test
     fun doesProgressBarDisappearAfterAppStateIsPropagated() {
+        navigateToSelectedBreedGallery()
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
@@ -82,12 +86,29 @@ class BreedGalleryFragmentTest : BaseUITest() {
     }
 
     @Test
+    fun doesDisplaySnackBarAfterFailingToFetchImageUrls() {
+        mockWebServer.dispatcher = LoadGalleryErrorDispatcher()
+        navigateToSelectedBreedGallery()
+        mockWebServer.dispatcher = ErrorDispatcher()
+        activityRule.scenario.onActivity {
+            idlingRegistry.register(
+                ViewVisibilityIdlingResource(
+                    it.findViewById<ProgressBar>(R.id.btnRetryLoadImageUrls),
+                    View.VISIBLE
+                )
+            )
+        }
+        assertDisplayed(R.string.generic_network_error)
+    }
+
+
+    @Test
     fun doesDisplayGalleryImages() {
         navigateToSelectedBreedGallery()
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedImages),
                     View.GONE
                 )
             )
@@ -96,7 +117,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
     }
 
     @Test
-    fun isAbleToNavigateBackFromBreedDetails() {
+    fun isAbleToNavigateBackToBreedDetails() {
         navigateToSelectedBreedGallery()
         Espresso.pressBack()
         assertDisplayed(R.string.list_of_breeds_page_title)
@@ -104,9 +125,8 @@ class BreedGalleryFragmentTest : BaseUITest() {
 
     //endregion
 
-    // Navigation
+    //region Navigation
     private fun navigateToSelectedBreedGallery() {
-
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
@@ -116,7 +136,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
             )
         }
 
-        Espresso.onView(
+        onView(
             AllOf.allOf(
                 ViewMatchers.withId(R.id.tvDogBreed),
                 ViewMatchers.isDescendantOfA(
@@ -126,7 +146,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
                     )
                 )
             )
-        ).check(ViewAssertions.matches(ViewMatchers.withText(selectedDogBreed)))
+        ).check(ViewAssertions.matches(ViewMatchers.withText(SELECTED_BREED)))
             .perform(ViewActions.click())
 
     }

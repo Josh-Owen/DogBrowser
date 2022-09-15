@@ -45,16 +45,10 @@ class BreedGalleryFragmentVM @Inject constructor(
 
     private val uiState: Flow<BreedGalleryPageState> = _uiState
 
-
     private val _selectedDogBreed =
         MutableStateFlow("")
 
     private val selectedDogBreed: Flow<String> = _selectedDogBreed
-
-
-    init {
-
-    }
 
     //region Inputs
     override fun selectedDogBreed(breed: String) {
@@ -71,7 +65,9 @@ class BreedGalleryFragmentVM @Inject constructor(
                     }
                     is ApiError -> {
                         _uiState.value = BreedGalleryPageState.Error(
-                            it.message ?: ""
+                            getApplication<Application>().getString(
+                                R.string.generic_network_error
+                            )
                         )
                     }
                     is ApiException -> {

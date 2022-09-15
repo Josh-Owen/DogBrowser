@@ -78,7 +78,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            TestCase.assertTrue(emission is BreedListPageState.Error && emission.message == apiErrorMessage)
+            TestCase.assertTrue(emission is BreedListPageState.Error && emission.message == genericNetworkMessage)
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -90,7 +90,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            TestCase.assertTrue(emission is BreedListPageState.Error)
+            TestCase.assertTrue(emission is BreedListPageState.Error && emission.message == genericRuntimeException.message)
             cancelAndConsumeRemainingEvents()
         }
     }

@@ -3,7 +3,6 @@ package josh.owen.dogbrowser.tests
 import android.view.View
 import android.widget.ProgressBar
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -27,9 +26,13 @@ import org.junit.rules.RuleChain
 @LargeTest
 class BreedsListFragmentTest : BaseUITest() {
 
+    //region Variables & Class Members
     @get:Rule
     var hiltRule: RuleChain = RuleChain.outerRule(HiltAndroidRule(this)).around(activityRule)
 
+    //endregion
+
+    //region Tests
     @Test
     fun doesDisplayScreenTitle() {
         assertDisplayed(R.string.list_of_breeds_page_title)
@@ -57,14 +60,14 @@ class BreedsListFragmentTest : BaseUITest() {
                 )
             )
         }
-//        activityRule.scenario.onActivity {
-//            idlingRegistry.register(
-//                ViewVisibilityIdlingResource(
-//                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
-//                    View.GONE
-//                )
-//            )
-//        }
+        activityRule.scenario.onActivity {
+            idlingRegistry.register(
+                ViewVisibilityIdlingResource(
+                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+                    View.GONE
+                )
+            )
+        }
     }
 
     @Test
@@ -80,23 +83,22 @@ class BreedsListFragmentTest : BaseUITest() {
         }
     }
 
-//    @Test
-//    fun doesDisplaySnackBarAfterFailingToFetchNames() {
-//        mockWebServer.dispatcher = ErrorDispatcher()
-//        activityRule.scenario.onActivity {
-//            idlingRegistry.register(
-//                ViewVisibilityIdlingResource(
-//                    it.findViewById<ProgressBar>(R.id.btnRetryLoadingBreedList),
-//                    View.VISIBLE
-//                )
-//            )
-//        }
-//        assertDisplayed("Client Error")
-//    }
+    @Test
+    fun doesDisplaySnackBarAfterFailingToFetchNames() {
+        mockWebServer.dispatcher = ErrorDispatcher()
+        activityRule.scenario.onActivity {
+            idlingRegistry.register(
+                ViewVisibilityIdlingResource(
+                    it.findViewById<ProgressBar>(R.id.btnRetryLoadingBreedList),
+                    View.VISIBLE
+                )
+            )
+        }
+        assertDisplayed(R.string.generic_network_error)
+    }
 
     @Test
-    fun doesDisplayBreedDetailsHeader() {
-
+    fun doesDisplayListOfDogBreeds() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
@@ -105,6 +107,7 @@ class BreedsListFragmentTest : BaseUITest() {
                 )
             )
         }
+        assertRecyclerViewItemCount(R.id.rvDogBreedNames, 97)
 
         Espresso.onView(
             AllOf.allOf(
@@ -122,87 +125,45 @@ class BreedsListFragmentTest : BaseUITest() {
         ).check(ViewAssertions.matches(withText(R.string.list_of_breeds_sub_breed_title)))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-    }
-
-
-
-    @Test
-    fun doesDisplayListOfDogBreeds() {
-
-        activityRule.scenario.onActivity {
-            idlingRegistry.register(
-                ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
-                    View.GONE
-                )
-            )
-        }
-
-        assertRecyclerViewItemCount(R.id.rvDogBreedNames, 97)
-
-//        Espresso.onView(
-//            AllOf.allOf(
-//                withId(R.id.tvDogBreed),
-//                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 1))
-//            )
-//        ).check(ViewAssertions.matches(withText("affenpinscher")))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-//        Espresso.onView(
-//            AllOf.allOf(
-//                withId(R.id.tvDogBreed),
-//                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 11))
-//            )
-//        ).check(ViewAssertions.matches(withText("bouvier")))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-//
-//        Espresso.onView(
-//            AllOf.allOf(
-//                withId(R.id.tvDogBreed),
-//                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 3))
-//            )
-//        ).check(ViewAssertions.matches(withText("airedale")))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-//
-//        Espresso.onView(
-//            AllOf.allOf(
-//                withId(R.id.tvDogBreed),
-//                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 4))
-//            )
-//        ).check(ViewAssertions.matches(withText("akita")))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-//
-//        Espresso.onView(
-//            AllOf.allOf(
-//                withId(R.id.tvDogBreed),
-//                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 5))
-//            )
-//        ).check(ViewAssertions.matches(withText("appenzeller")))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-    }
-
-    // Navigation
-    private fun navigateToBreedDetails() {
-
-        activityRule.scenario.onActivity {
-            idlingRegistry.register(
-                ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
-                    View.GONE
-                )
-            )
-        }
-
         Espresso.onView(
             AllOf.allOf(
                 withId(R.id.tvDogBreed),
                 ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 1))
             )
-        ).perform(click())
+        ).check(ViewAssertions.matches(withText("affenpinscher")))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
+        Espresso.onView(
+            AllOf.allOf(
+                withId(R.id.tvDogBreed),
+                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 11))
+            )
+        ).check(ViewAssertions.matches(withText("bouvier")))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        Espresso.onView(
+            AllOf.allOf(
+                withId(R.id.tvDogBreed),
+                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 3))
+            )
+        ).check(ViewAssertions.matches(withText("airedale")))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        Espresso.onView(
+            AllOf.allOf(
+                withId(R.id.tvDogBreed),
+                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 4))
+            )
+        ).check(ViewAssertions.matches(withText("akita")))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        Espresso.onView(
+            AllOf.allOf(
+                withId(R.id.tvDogBreed),
+                ViewMatchers.isDescendantOfA(nthChildOf(withId(R.id.rvDogBreedNames), 5))
+            )
+        ).check(ViewAssertions.matches(withText("appenzeller")))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
     //endregion
-
-
 }

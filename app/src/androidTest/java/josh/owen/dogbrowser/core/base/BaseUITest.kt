@@ -18,19 +18,19 @@ abstract class BaseUITest {
 
     val mockWebServer = MockWebServer()
 
-    var idlingRegistry = IdlingRegistry.getInstance()
+    lateinit var idlingRegistry: IdlingRegistry
 
     @Before
     fun setup() {
+        idlingRegistry = IdlingRegistry.getInstance()
         mockWebServer.dispatcher = SuccessDispatcher()
         mockWebServer.start(8080)
-        idlingRegistry = IdlingRegistry.getInstance()
     }
 
     @After
     fun tearDown() {
-        mockWebServer.shutdown()
         idlingRegistry.unregister()
         activityRule.scenario?.close()
+        mockWebServer.shutdown()
     }
 }

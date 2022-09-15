@@ -94,7 +94,7 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            assertTrue(emission is BreedGalleryPageState.Error && emission.message == apiErrorMessage)
+            assertTrue(emission is BreedGalleryPageState.Error && emission.message == genericNetworkMessage)
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -107,7 +107,7 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            assertTrue(emission is BreedGalleryPageState.Error)
+            assertTrue(emission is BreedGalleryPageState.Error && emission.message == genericRuntimeException.message)
             cancelAndConsumeRemainingEvents()
         }
     }

@@ -24,7 +24,6 @@ interface BreedsListFragmentVMInputs {
 }
 //endregion
 
-
 //region Outputs
 interface BreedsListFragmentVMOutputs {
     fun fetchUiState(): Flow<BreedListPageState>
@@ -37,7 +36,6 @@ class BreedsListFragmentVM @Inject constructor(
     private val dispatchers: DispatchersProvider,
     private val dogRepository: DogRepository
 ) : BaseViewModel(application), BreedsListFragmentVMInputs, BreedsListFragmentVMOutputs {
-
 
     //region Variables & Class Members
 
@@ -80,7 +78,9 @@ class BreedsListFragmentVM @Inject constructor(
                         }
                         is ApiError -> {
                             _uiState.value = BreedListPageState.Error(
-                                it.message ?: ""
+                                getApplication<Application>().getString(
+                                    R.string.generic_network_error
+                                )
                             )
                         }
                         is ApiException -> {

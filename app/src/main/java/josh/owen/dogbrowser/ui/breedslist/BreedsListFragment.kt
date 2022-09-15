@@ -28,7 +28,6 @@ class BreedsListFragment : BaseFragment<FragmentBreedListBinding>() {
 
     //endregion
 
-
     //region Base Fragment Overrides
 
     override fun inflateBinding(layoutInflater: LayoutInflater): FragmentBreedListBinding {
@@ -91,7 +90,7 @@ class BreedsListFragment : BaseFragment<FragmentBreedListBinding>() {
     }
     //endregion
 
-    //Navigation
+    //region Navigation
     private fun navigateToBreedGallery(breedName: String) {
         val action =
             BreedsListFragmentDirections.actionListOfBreedsFragmentToBreedGalleryFragment(breedName)

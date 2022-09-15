@@ -1,4 +1,4 @@
-package josh.owen.dogbrowser.core
+package josh.owen.dogbrowser.core.runners
 
 import android.app.Application
 import android.content.Context
