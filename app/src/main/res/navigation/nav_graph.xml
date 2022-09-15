@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listOfBreedsFragment">
+
+
+    <fragment
+        android:id="@+id/listOfBreedsFragment"
+        android:name="josh.owen.dogbrowser.ui.breedslist.BreedsListFragment"
+        android:label="@string/list_of_breeds_page_title"
+        tools:layout="@layout/fragment_breed_list">
+        <action
+            android:id="@+id/action_listOfBreedsFragment_to_breedGalleryFragment"
+            app:destination="@id/breedGalleryFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/breedGalleryFragment"
+        android:name="josh.owen.dogbrowser.ui.breedgallery.BreedGalleryFragment"
+        android:label="@string/breed_gallery_page_title"
+        tools:layout="@layout/fragment_breed_gallery">
+        <argument
+            android:name="breedName"
+            app:argType="string" />
+    </fragment>
+
+
+</navigation>
