@@ -42,7 +42,6 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
                 GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
             adapter = galleryAdapter
         }
-
     }
 
     override fun observeViewModel() {
@@ -79,7 +78,9 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
-                            else -> {}
+                            else -> {
+                                // Do something
+                            }
                         }
                         binding.pbLoadingBreedImages.displayIfTrue(state is BreedGalleryPageState.Loading)
                         binding.btnRetryLoadImageUrls.displayIfTrue(state is BreedGalleryPageState.Error)

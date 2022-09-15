@@ -25,7 +25,7 @@ import org.junit.rules.RuleChain
 
 @HiltAndroidTest
 @LargeTest
-class ListOfDogBreedsFragmentTest : BaseUITest() {
+class BreedsListFragmentTest : BaseUITest() {
 
     @get:Rule
     var hiltRule: RuleChain = RuleChain.outerRule(HiltAndroidRule(this)).around(activityRule)
@@ -57,14 +57,14 @@ class ListOfDogBreedsFragmentTest : BaseUITest() {
                 )
             )
         }
-        activityRule.scenario.onActivity {
-            idlingRegistry.register(
-                ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
-                    View.GONE
-                )
-            )
-        }
+//        activityRule.scenario.onActivity {
+//            idlingRegistry.register(
+//                ViewVisibilityIdlingResource(
+//                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+//                    View.GONE
+//                )
+//            )
+//        }
     }
 
     @Test
@@ -124,13 +124,7 @@ class ListOfDogBreedsFragmentTest : BaseUITest() {
 
     }
 
-//    @Test
-//    fun isAbleToNavigateBackFromBreedDetails() {
-//      //  assertDisplayed(R.string.list_of_breeds_page_title)
-//        navigateToBreedDetails()
-//        Espresso.pressBack()
-//        assertDisplayed(R.string.list_of_breeds_page_title)
-//    }
+
 
     @Test
     fun doesDisplayListOfDogBreeds() {

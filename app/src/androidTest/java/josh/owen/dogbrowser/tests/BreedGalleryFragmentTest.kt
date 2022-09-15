@@ -9,6 +9,8 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
+import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions
+import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -23,7 +25,7 @@ import org.junit.rules.RuleChain
 
 @HiltAndroidTest
 @LargeTest
-class DogBreedGalleryFragmentTest : BaseUITest() {
+class BreedGalleryFragmentTest : BaseUITest() {
 
     @get:Rule
     var hiltRule: RuleChain = RuleChain.outerRule(HiltAndroidRule(this)).around(activityRule)
@@ -56,8 +58,48 @@ class DogBreedGalleryFragmentTest : BaseUITest() {
     }
 
     @Test
-    fun doesDisplayGalleryImages() {
+    fun doesDisplayProgressBar() {
+        activityRule.scenario.onActivity {
+            idlingRegistry.register(
+                ViewVisibilityIdlingResource(
+                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedImages),
+                    View.VISIBLE
+                )
+            )
+        }
+    }
 
+    @Test
+    fun doesProgressBarDisappearAfterAppStateIsPropagated() {
+        activityRule.scenario.onActivity {
+            idlingRegistry.register(
+                ViewVisibilityIdlingResource(
+                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedImages),
+                    View.GONE
+                )
+            )
+        }
+    }
+
+    @Test
+    fun doesDisplayGalleryImages() {
+        navigateToSelectedBreedGallery()
+        activityRule.scenario.onActivity {
+            idlingRegistry.register(
+                ViewVisibilityIdlingResource(
+                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+                    View.GONE
+                )
+            )
+        }
+        assertRecyclerViewItemCount(R.id.rvDogBreedImages, 10)
+    }
+
+    @Test
+    fun isAbleToNavigateBackFromBreedDetails() {
+        navigateToSelectedBreedGallery()
+        Espresso.pressBack()
+        assertDisplayed(R.string.list_of_breeds_page_title)
     }
 
     //endregion

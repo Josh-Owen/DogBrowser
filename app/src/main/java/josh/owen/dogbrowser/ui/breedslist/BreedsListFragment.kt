@@ -69,7 +69,9 @@ class BreedsListFragment : BaseFragment<FragmentBreedListBinding>() {
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
-                            else -> {}
+                            else -> {
+                                // Do something
+                            }
                         }
                         binding.pbLoadingBreedNames.displayIfTrue(state is BreedListPageState.Loading)
                         binding.btnRetryLoadingBreedList.displayIfTrue(state is BreedListPageState.Error)
