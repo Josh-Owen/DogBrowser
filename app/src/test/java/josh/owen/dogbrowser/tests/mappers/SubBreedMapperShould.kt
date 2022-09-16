@@ -37,6 +37,34 @@ class SubBreedMapperShould : BaseUnitTest() {
             dogImageURL9
         )
 
+    private val preProcessedUrlsUpperLimit =
+        listOf(
+            dogImageURL0,
+            dogImageURL1,
+            dogImageURL2,
+            dogImageURL3,
+            dogImageURL4,
+            dogImageURL5,
+            dogImageURL6,
+            dogImageURL7,
+            dogImageURL8,
+            dogImageURL9,
+            dogImageURL0,
+            dogImageURL1,
+            dogImageURL2,
+            dogImageURL3,
+            dogImageURL4,
+            dogImageURL5,
+            dogImageURL6,
+            dogImageURL7,
+            dogImageURL8,
+            dogImageURL9,
+        )
+
+    private val upperLimitApiResponse : DogBreedImagesApiResponse =
+        DogBreedImagesApiResponse(preProcessedUrlsUpperLimit, true)
+    private val upperLimitMappedResponse = mapper.invoke(upperLimitApiResponse)
+
 
     private val preProcessedApiResponse: DogBreedImagesApiResponse =
         DogBreedImagesApiResponse(preProcessedUrls, true)
@@ -55,6 +83,11 @@ class SubBreedMapperShould : BaseUnitTest() {
         SubBreed(dogImageURL8),
         SubBreed(dogImageURL9),
     )
+
+    @Test
+    fun doesReturnCorrectAmountOfSubBreedsIfApiExceedsMaximum() {
+        assertTrue(upperLimitMappedResponse.size == 10)
+    }
 
     @Test
     fun hasExpectedDataPreMapping() {
