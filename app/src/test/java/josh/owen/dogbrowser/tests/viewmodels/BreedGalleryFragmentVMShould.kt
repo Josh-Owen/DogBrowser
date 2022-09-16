@@ -104,7 +104,7 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun isGenericExceptionStatePropagated() = runTest (testDispatchers.io) {
+    fun isGenericExceptionStatePropagated() = runTest(testDispatchers.io) {
         mockExceptionCase()
         viewModel.inputs.selectedDogBreed(selectedDogBreed)
         viewModel.inputs.fetchDogBreedImages()

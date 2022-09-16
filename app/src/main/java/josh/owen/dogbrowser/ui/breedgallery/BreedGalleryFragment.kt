@@ -81,24 +81,24 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
                     viewModel.outputs
                         .fetchUiState()
                         .collectLatest { state ->
-                        when (state) {
-                            is BreedGalleryPageState.Success -> {
-                                galleryAdapter.submitList(state.imageUrls)
+                            when (state) {
+                                is BreedGalleryPageState.Success -> {
+                                    galleryAdapter.submitList(state.imageUrls)
+                                }
+                                is BreedGalleryPageState.Error -> {
+                                    Snackbar.make(
+                                        binding.root,
+                                        state.message,
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
+                                }
+                                else -> {
+                                    // Do something
+                                }
                             }
-                            is BreedGalleryPageState.Error -> {
-                                Snackbar.make(
-                                    binding.root,
-                                    state.message,
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                            }
-                            else -> {
-                                // Do something
-                            }
+                            binding.lavLoadingBreedImages.displayIfTrue(state is BreedGalleryPageState.Loading)
+                            binding.btnRetryLoadImageUrls.displayIfTrue(state is BreedGalleryPageState.Error)
                         }
-                        binding.lavLoadingBreedImages.displayIfTrue(state is BreedGalleryPageState.Loading)
-                        binding.btnRetryLoadImageUrls.displayIfTrue(state is BreedGalleryPageState.Error)
-                    }
                 }
             }
         }
