@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
@@ -63,7 +64,7 @@ class BreedGalleryAdapter :
         //region Variables & Class Members
         private val ivDogImage: ImageView = binding.ivBreedImage
 
-        private val pbLoadingDogImage: ProgressBar = binding.pbLoadingImage
+        private val pbLoadingDogImage: LottieAnimationView = binding.lavLoadingImage
 
         private val tvErrorLoadingImage: TextView = binding.tvErrorLoadingImage
         //endregion
@@ -86,7 +87,6 @@ class BreedGalleryAdapter :
                         tvErrorLoadingImage.display()
                     }
                 })
-
         }
     }
     //endregion

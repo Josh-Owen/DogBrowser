@@ -2,5 +2,7 @@
 <resources>
 
     <dimen name="image_gallery_default_height">200dp</dimen>
+    <dimen name="progress_bar_width">128dp</dimen>
+    <dimen name="progress_bar_height">128dp</dimen>
 
 </resources>

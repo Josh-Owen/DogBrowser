@@ -102,4 +102,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // Orchestrator
     androidTestUtil 'androidx.test:orchestrator:1.4.1'
+    // Lottie
+    implementation 'com.airbnb.android:lottie:5.2.0'
+
 }

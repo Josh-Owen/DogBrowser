@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package josh.owen.dogbrowser.tests.viewmodels
 
 import android.app.Application
@@ -12,8 +14,10 @@ import josh.owen.dogbrowser.retrofit.wrappers.ApiSuccess
 import josh.owen.dogbrowser.ui.breedslist.BreedListPageState
 import josh.owen.dogbrowser.ui.breedslist.BreedsListFragmentVM
 import junit.framework.TestCase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -49,7 +53,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
 
 
     @Test
-    fun isLoadingStatePropagated() = runBlocking(testDispatchers.io) {
+    fun isLoadingStatePropagated() = runTest(testDispatchers.io) {
         mockSuccessfulCase()
         viewModel.inputs.loadBreedsList()
         viewModel.outputs.fetchUiState().test {
@@ -60,7 +64,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
     }
 
     @Test
-    fun isSuccessfulStatePropagated() = runBlocking(testDispatchers.io) {
+    fun isSuccessfulStatePropagated() = runTest(testDispatchers.io) {
         mockSuccessfulCase()
         viewModel.inputs.loadBreedsList()
         viewModel.outputs.fetchUiState().test {
@@ -72,7 +76,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
     }
 
     @Test
-    fun isApiErrorStatePropagated() = runBlocking(testDispatchers.io) {
+    fun isApiErrorStatePropagated() = runTest(testDispatchers.io) {
         mockApiErrorCase()
         viewModel.inputs.loadBreedsList()
         viewModel.outputs.fetchUiState().test {
@@ -84,7 +88,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
     }
 
     @Test
-    fun isGenericExceptionStatePropagated() = runBlocking(testDispatchers.io) {
+    fun isGenericExceptionStatePropagated() = runTest(testDispatchers.io) {
         mockExceptionCase()
         viewModel.inputs.loadBreedsList()
         viewModel.outputs.fetchUiState().test {

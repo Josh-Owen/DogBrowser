@@ -10,8 +10,11 @@ import josh.owen.dogbrowser.repositories.DogRepository
 import josh.owen.dogbrowser.retrofit.wrappers.ApiError
 import josh.owen.dogbrowser.retrofit.wrappers.ApiException
 import josh.owen.dogbrowser.retrofit.wrappers.ApiSuccess
+import josh.owen.dogbrowser.ui.breedslist.BreedListPageState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -58,27 +61,35 @@ class BreedGalleryFragmentVM @Inject constructor(
     override fun fetchDogBreedImages() {
         _uiState.value = BreedGalleryPageState.Loading
         viewModelScope.launch(dispatchers.io) {
-            dogRepository.fetchSpecifiedBreedImages(_selectedDogBreed.value).collectLatest {
-                when (it) {
-                    is ApiSuccess -> {
-                        _uiState.value = BreedGalleryPageState.Success(it.data)
-                    }
-                    is ApiError -> {
-                        _uiState.value = BreedGalleryPageState.Error(
-                            getApplication<Application>().getString(
-                                R.string.generic_network_error
-                            )
+            dogRepository.fetchSpecifiedBreedImages(_selectedDogBreed.value)
+                .catch {
+                    _uiState.value =
+                        BreedGalleryPageState.Error(
+                            it.message.toString()
                         )
-                    }
-                    is ApiException -> {
-                        _uiState.value = BreedGalleryPageState.Error(
-                            getApplication<Application>().getString(
-                                R.string.generic_network_error
+                }
+                .collectLatest {
+                    delay(500) // Add delay to avoid progress bar flicker
+                    when (it) {
+                        is ApiSuccess -> {
+                            _uiState.value = BreedGalleryPageState.Success(it.data)
+                        }
+                        is ApiError -> {
+                            _uiState.value = BreedGalleryPageState.Error(
+                                getApplication<Application>().getString(
+                                    R.string.generic_network_error
+                                )
                             )
-                        )
+                        }
+                        is ApiException -> {
+                            _uiState.value = BreedGalleryPageState.Error(
+                                getApplication<Application>().getString(
+                                    R.string.generic_network_error
+                                )
+                            )
+                        }
                     }
                 }
-            }
         }
     }
 

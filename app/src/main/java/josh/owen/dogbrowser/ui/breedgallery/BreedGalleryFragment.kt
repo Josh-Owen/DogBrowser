@@ -12,8 +12,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseFragment
 import josh.owen.dogbrowser.databinding.FragmentBreedGalleryBinding
+import josh.owen.dogbrowser.extensions.clicks
 import josh.owen.dogbrowser.extensions.displayIfTrue
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 
@@ -44,6 +47,7 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
         }
     }
 
+    @OptIn(FlowPreview::class)
     override fun observeViewModel() {
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -66,7 +70,17 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
                     viewModel.inputs.fetchDogBreedImages()
                 }
                 launch {
-                    viewModel.outputs.fetchUiState().collectLatest { state ->
+                    binding.btnRetryLoadImageUrls
+                        .clicks()
+                        .debounce(200)
+                        .collectLatest {
+                            viewModel.inputs.fetchDogBreedImages()
+                        }
+                }
+                launch {
+                    viewModel.outputs
+                        .fetchUiState()
+                        .collectLatest { state ->
                         when (state) {
                             is BreedGalleryPageState.Success -> {
                                 galleryAdapter.submitList(state.imageUrls)
@@ -82,7 +96,7 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
                                 // Do something
                             }
                         }
-                        binding.pbLoadingBreedImages.displayIfTrue(state is BreedGalleryPageState.Loading)
+                        binding.lavLoadingBreedImages.displayIfTrue(state is BreedGalleryPageState.Loading)
                         binding.btnRetryLoadImageUrls.displayIfTrue(state is BreedGalleryPageState.Error)
                     }
                 }

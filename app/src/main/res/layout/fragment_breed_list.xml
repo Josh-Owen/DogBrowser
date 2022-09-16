@@ -15,10 +15,13 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_dog_breed_name" />
 
-    <ProgressBar
-        android:id="@+id/pbLoadingBreedNames"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lavLoadingBreedNames"
+        android:layout_width="@dimen/progress_bar_width"
+        android:layout_height="@dimen/progress_bar_height"
+        app:lottie_rawRes="@raw/dog_loading_spinner"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pbLoadingBreedNames" />
+        app:layout_constraintTop_toBottomOf="@+id/lavLoadingBreedNames" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,10 +10,8 @@ import josh.owen.dogbrowser.repositories.DogRepository
 import josh.owen.dogbrowser.retrofit.wrappers.ApiError
 import josh.owen.dogbrowser.retrofit.wrappers.ApiException
 import josh.owen.dogbrowser.retrofit.wrappers.ApiSuccess
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -72,6 +70,7 @@ class BreedsListFragmentVM @Inject constructor(
                         )
                 }
                 .collectLatest {
+                    delay(500)
                     when (it) {
                         is ApiSuccess -> {
                             _uiState.value = BreedListPageState.Success(it.data)

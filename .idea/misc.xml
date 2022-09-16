@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/fragment_breed_gallery.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_breed_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_dog_breed_image.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -50,37 +50,36 @@ class BreedsListFragment : BaseFragment<FragmentBreedListBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
 
-
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-
                 launch {
-                    viewModel.fetchUiState().collectLatest { state ->
-
-                        when (state) {
-                            is BreedListPageState.Success -> {
-                                breedsAdapter.submitList(state.data)
-                            }
-                            is BreedListPageState.Error -> {
-                                Snackbar.make(
-                                    binding.root,
-                                    state.message,
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                            }
-                            else -> {
-                                // Do something
+                    viewModel
+                        .fetchUiState()
+                        .collectLatest { state ->
+                            binding.lavLoadingBreedNames.displayIfTrue(state is BreedListPageState.Loading)
+                            binding.btnRetryLoadingBreedList.displayIfTrue(state is BreedListPageState.Error)
+                            when (state) {
+                                is BreedListPageState.Success -> {
+                                    breedsAdapter.submitList(state.data)
+                                }
+                                is BreedListPageState.Error -> {
+                                    Snackbar.make(
+                                        binding.root,
+                                        state.message,
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
+                                }
+                                else -> {
+                                    // Do something
+                                }
                             }
                         }
-                        binding.pbLoadingBreedNames.displayIfTrue(state is BreedListPageState.Loading)
-                        binding.btnRetryLoadingBreedList.displayIfTrue(state is BreedListPageState.Error)
-                    }
                 }
 
                 launch {
                     binding.btnRetryLoadingBreedList
                         .clicks()
-                        .debounce(500)
+                        .debounce(200)
                         .collectLatest {
                             viewModel.inputs.loadBreedsList()
                         }

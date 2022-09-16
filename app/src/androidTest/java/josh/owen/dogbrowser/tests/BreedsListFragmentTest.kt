@@ -10,6 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.filters.LargeTest
 import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.airbnb.lottie.LottieAnimationView
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import josh.owen.dogbrowser.R
@@ -17,6 +18,7 @@ import josh.owen.dogbrowser.core.base.BaseUITest
 import josh.owen.dogbrowser.dispatchers.ErrorDispatcher
 import josh.owen.dogbrowser.utils.nthChildOf
 import josh.owen.dogbrowser.utils.views.ViewVisibilityIdlingResource
+import kotlinx.coroutines.delay
 import org.hamcrest.core.AllOf
 import org.junit.Rule
 import org.junit.Test
@@ -43,7 +45,7 @@ class BreedsListFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedNames),
                     View.VISIBLE
                 )
             )
@@ -55,7 +57,7 @@ class BreedsListFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedNames),
                     View.VISIBLE
                 )
             )
@@ -63,7 +65,7 @@ class BreedsListFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedNames),
                     View.GONE
                 )
             )
@@ -86,14 +88,7 @@ class BreedsListFragmentTest : BaseUITest() {
     @Test
     fun doesDisplaySnackBarAfterFailingToFetchNames() {
         mockWebServer.dispatcher = ErrorDispatcher()
-        activityRule.scenario.onActivity {
-            idlingRegistry.register(
-                ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.btnRetryLoadingBreedList),
-                    View.VISIBLE
-                )
-            )
-        }
+        Thread.sleep(1000)
         assertDisplayed(R.string.generic_network_error)
     }
 
@@ -102,7 +97,7 @@ class BreedsListFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedNames),
                     View.GONE
                 )
             )

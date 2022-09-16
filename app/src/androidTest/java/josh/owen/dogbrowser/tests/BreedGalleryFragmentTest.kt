@@ -17,7 +17,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.core.SELECTED_BREED
 import josh.owen.dogbrowser.core.base.BaseUITest
-import josh.owen.dogbrowser.dispatchers.ErrorDispatcher
 import josh.owen.dogbrowser.dispatchers.LoadGalleryErrorDispatcher
 import josh.owen.dogbrowser.utils.nthChildOf
 import josh.owen.dogbrowser.utils.views.ViewVisibilityIdlingResource
@@ -65,7 +64,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedImages),
+                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedImages),
                     View.VISIBLE
                 )
             )
@@ -78,7 +77,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedImages),
+                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedImages),
                     View.GONE
                 )
             )
@@ -89,15 +88,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
     fun doesDisplaySnackBarAfterFailingToFetchImageUrls() {
         mockWebServer.dispatcher = LoadGalleryErrorDispatcher()
         navigateToSelectedBreedGallery()
-        mockWebServer.dispatcher = ErrorDispatcher()
-        activityRule.scenario.onActivity {
-            idlingRegistry.register(
-                ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.btnRetryLoadImageUrls),
-                    View.VISIBLE
-                )
-            )
-        }
+        Thread.sleep(1000)
         assertDisplayed(R.string.generic_network_error)
     }
 
@@ -108,7 +99,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedImages),
+                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedImages),
                     View.GONE
                 )
             )
@@ -130,7 +121,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.pbLoadingBreedNames),
+                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedNames),
                     View.GONE
                 )
             )
