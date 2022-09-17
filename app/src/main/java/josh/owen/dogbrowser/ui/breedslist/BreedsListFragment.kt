@@ -91,7 +91,7 @@ class BreedsListFragment : BaseFragment<FragmentBreedListBinding>() {
     //endregion
 
     //region Navigation
-    private fun navigateToBreedGallery(dogBreed : DogBreed) {
+    private fun navigateToBreedGallery(dogBreed: DogBreed) {
         val action =
             BreedsListFragmentDirections.actionListOfBreedsFragmentToBreedGalleryFragment(dogBreed)
         findNavController().navigate(action)

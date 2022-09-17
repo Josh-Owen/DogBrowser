@@ -61,7 +61,7 @@ class SubBreedMapperShould : BaseUnitTest() {
             dogImageURL9,
         )
 
-    private val upperLimitApiResponse : DogBreedImagesApiResponse =
+    private val upperLimitApiResponse: DogBreedImagesApiResponse =
         DogBreedImagesApiResponse(preProcessedUrlsUpperLimit, true)
     private val upperLimitMappedResponse = mapper.invoke(upperLimitApiResponse)
 
