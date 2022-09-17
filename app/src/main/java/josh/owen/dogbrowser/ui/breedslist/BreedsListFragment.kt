@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import josh.owen.dogbrowser.base.BaseFragment
+import josh.owen.dogbrowser.data.DogBreed
 import josh.owen.dogbrowser.databinding.FragmentBreedListBinding
 import josh.owen.dogbrowser.extensions.clicks
 import josh.owen.dogbrowser.extensions.displayIfTrue
@@ -90,9 +91,9 @@ class BreedsListFragment : BaseFragment<FragmentBreedListBinding>() {
     //endregion
 
     //region Navigation
-    private fun navigateToBreedGallery(breedName: String) {
+    private fun navigateToBreedGallery(dogBreed : DogBreed) {
         val action =
-            BreedsListFragmentDirections.actionListOfBreedsFragmentToBreedGalleryFragment(breedName)
+            BreedsListFragmentDirections.actionListOfBreedsFragmentToBreedGalleryFragment(dogBreed)
         findNavController().navigate(action)
     }
     //endregion

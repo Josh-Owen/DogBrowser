@@ -4,6 +4,7 @@ import android.app.Application
 import app.cash.turbine.test
 import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseUnitTest
+import josh.owen.dogbrowser.data.DogBreed
 import josh.owen.dogbrowser.data.SubBreed
 import josh.owen.dogbrowser.repositories.DogRepositoryImpl
 import josh.owen.dogbrowser.retrofit.wrappers.ApiError
@@ -32,7 +33,7 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
 
     private lateinit var viewModel: BreedGalleryFragmentVM
 
-    private val selectedDogBreed = "Dachshund"
+    private val selectedDogBreed = DogBreed("Dachshund", listOf())
 
     private val expectedSubBreedResponse: List<SubBreed> = mock()
 
@@ -120,13 +121,13 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
 
     //region Test Cases
     private suspend fun mockSuccessfulCase() {
-        whenever(repository.fetchSpecifiedBreedImages(selectedDogBreed)).thenReturn(flow {
+        whenever(repository.fetchSpecifiedBreedImages(selectedDogBreed.breedName)).thenReturn(flow {
             emit(ApiSuccess(expectedSubBreedResponse))
         })
     }
 
     private suspend fun mockExceptionCase() {
-        whenever(repository.fetchSpecifiedBreedImages(selectedDogBreed)).thenReturn(flow {
+        whenever(repository.fetchSpecifiedBreedImages(selectedDogBreed.breedName)).thenReturn(flow {
             emit(ApiException(genericRuntimeException))
         })
         whenever(
@@ -137,7 +138,7 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
     }
 
     private suspend fun mockApiErrorCase() {
-        whenever(repository.fetchSpecifiedBreedImages(selectedDogBreed)).thenReturn(flow {
+        whenever(repository.fetchSpecifiedBreedImages(selectedDogBreed.breedName)).thenReturn(flow {
             emit(ApiError(420, apiErrorMessage))
         })
         whenever(

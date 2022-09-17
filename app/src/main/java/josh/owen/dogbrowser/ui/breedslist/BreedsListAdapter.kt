@@ -13,7 +13,7 @@ import josh.owen.dogbrowser.databinding.ItemDogBreedNameBinding
 
 //region BreedsListAdapter
 class BreedsListAdapter(
-    private val listener: (String) -> Unit
+    private val listener: (DogBreed) -> Unit
 ) : ListAdapter<DogBreed, RecyclerView.ViewHolder>(BreedsComparator()) {
 
     //region Companion Object
@@ -117,7 +117,7 @@ class BreedsListAdapter(
         //region View.OnClickListener
         override fun onClick(view: View) {
             dogBreed?.let {
-                listener.invoke(it.breedName)
+                listener.invoke(it)
             }
         }
         //endregion
