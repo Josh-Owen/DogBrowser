@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package josh.owen.dogbrowser.tests.viewmodels
 
 import android.app.Application
@@ -89,7 +91,6 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun isApiErrorStatePropagated() = runTest(testDispatchers.io) {
         mockApiErrorCase()
@@ -103,7 +104,6 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun isGenericExceptionStatePropagated() = runTest(testDispatchers.io) {
         mockExceptionCase()
