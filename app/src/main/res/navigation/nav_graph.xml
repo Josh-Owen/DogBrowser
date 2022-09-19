@@ -23,8 +23,8 @@
         android:label="@string/breed_gallery_page_title"
         tools:layout="@layout/fragment_breed_gallery">
         <argument
-            android:name="breedName"
-            app:argType="string" />
+            android:name="dogBreed"
+            app:argType="josh.owen.dogbrowser.data.DogBreed" />
     </fragment>
 
 

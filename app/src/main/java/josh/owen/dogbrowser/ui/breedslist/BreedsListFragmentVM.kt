@@ -43,8 +43,7 @@ class BreedsListFragmentVM @Inject constructor(
     val inputs: BreedsListFragmentVMInputs = this
     val outputs: BreedsListFragmentVMOutputs = this
 
-    private val _uiState =
-        MutableStateFlow<BreedListPageState>(BreedListPageState.Loading)
+    private val _uiState = MutableStateFlow<BreedListPageState>(BreedListPageState.Loading)
 
     private val uiState: Flow<BreedListPageState> = _uiState
 
@@ -73,7 +72,7 @@ class BreedsListFragmentVM @Inject constructor(
                         )
                 }
                 .collectLatest {
-                    delay(500)
+                    delay(500) // Add delay to avoid progress bar flicker
                     when (it) {
                         is ApiSuccess -> {
                             _uiState.value = BreedListPageState.Success(it.data)

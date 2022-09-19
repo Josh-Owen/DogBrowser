@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseViewModel
+import josh.owen.dogbrowser.data.DogBreed
 import josh.owen.dogbrowser.dispatchers.DispatchersProvider
 import josh.owen.dogbrowser.repositories.DogRepository
 import josh.owen.dogbrowser.retrofit.wrappers.ApiError
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 //region Inputs
 interface BreedGalleryFragmentVMInputs {
-    fun selectedDogBreed(breed: String)
+    fun selectedDogBreed(dogBreed: DogBreed)
     fun fetchDogBreedImages()
 }
 //endregion
@@ -28,7 +29,7 @@ interface BreedGalleryFragmentVMInputs {
 
 //region Outputs
 interface BreedGalleryFragmentVMOutputs {
-    fun getDogBreed(): Flow<String>
+    fun getDogBreed(): Flow<DogBreed>
     fun fetchUiState(): Flow<BreedGalleryPageState>
 }
 //endregion
@@ -47,20 +48,19 @@ class BreedGalleryFragmentVM @Inject constructor(
 
     private val uiState: Flow<BreedGalleryPageState> = _uiState
 
-    private val _selectedDogBreed =
-        MutableStateFlow("")
+    private val _selectedDogBreed = MutableStateFlow(DogBreed("", listOf()))
 
-    private val selectedDogBreed: Flow<String> = _selectedDogBreed
+    private val selectedDogBreed: Flow<DogBreed> = _selectedDogBreed
 
     //region Inputs
-    override fun selectedDogBreed(breed: String) {
-        _selectedDogBreed.value = breed
+    override fun selectedDogBreed(dogBreed: DogBreed) {
+        _selectedDogBreed.value = dogBreed
     }
 
     override fun fetchDogBreedImages() {
         _uiState.value = BreedGalleryPageState.Loading
         viewModelScope.launch(dispatchers.io) {
-            dogRepository.fetchSpecifiedBreedImages(_selectedDogBreed.value)
+            dogRepository.fetchSpecifiedBreedImages(_selectedDogBreed.value.breedName)
                 .catch {
                     _uiState.value =
                         BreedGalleryPageState.Error(
@@ -101,9 +101,8 @@ class BreedGalleryFragmentVM @Inject constructor(
         return uiState
     }
 
-    override fun getDogBreed(): Flow<String> {
+    override fun getDogBreed(): Flow<DogBreed> {
         return selectedDogBreed
     }
     //endregion
-
 }

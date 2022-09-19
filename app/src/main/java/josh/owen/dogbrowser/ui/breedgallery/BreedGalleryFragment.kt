@@ -54,14 +54,14 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.inputs.selectedDogBreed(navArgs.breedName)
+                    viewModel.inputs.selectedDogBreed(navArgs.dogBreed)
                 }
                 launch {
                     viewModel.outputs.getDogBreed().collectLatest { selectedBreed ->
                         binding.tvSelectedDogBreed.text = String.format(
                             getString(
                                 R.string.breed_gallery_selected_breed,
-                                selectedBreed
+                                selectedBreed.breedName
                             )
                         )
                     }
