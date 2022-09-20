@@ -21,7 +21,7 @@ class DogRepositoryImpl @Inject constructor(
 ) : DogRepository {
 
     //region DogRepository Overrides
-    override suspend fun fetchDogBreeds(): Flow<ApiResult<List<DogBreed>>> {
+    override fun fetchDogBreeds(): Flow<ApiResult<List<DogBreed>>> {
         return flow {
             val apiResponse = dogApi.getListOfDogBreeds()
             val apiResponseBody = apiResponse.body()
@@ -42,7 +42,7 @@ class DogRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchSpecifiedBreedImages(numberOfDogToDisplayInGallery : Int, dogBreed: String): Flow<ApiResult<List<DogImage>>> {
+    override fun fetchSpecifiedBreedImages(numberOfDogToDisplayInGallery : Int, dogBreed: String): Flow<ApiResult<List<DogImage>>> {
         return flow {
             val apiResponse = dogApi.getListOfImagesByBreed(dogBreed, numberOfDogToDisplayInGallery)
             val apiResponseBody = apiResponse.body()
