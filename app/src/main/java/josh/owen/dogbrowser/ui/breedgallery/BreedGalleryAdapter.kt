@@ -12,13 +12,13 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import josh.owen.dogbrowser.data.SubBreed
+import josh.owen.dogbrowser.data.DogImage
 import josh.owen.dogbrowser.databinding.ItemDogBreedImageBinding
 import josh.owen.dogbrowser.extensions.display
 import josh.owen.dogbrowser.extensions.hide
 
 class BreedGalleryAdapter :
-    ListAdapter<SubBreed, BreedGalleryAdapter.BreedViewHolder>(DogBreedComparator()) {
+    ListAdapter<DogImage, BreedGalleryAdapter.BreedViewHolder>(DogBreedComparator()) {
 
     //region ListAdapter Overrides
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreedViewHolder {
@@ -39,17 +39,17 @@ class BreedGalleryAdapter :
     //endregion
 
     //region DiffUtil.ItemCallback
-    class DogBreedComparator : DiffUtil.ItemCallback<SubBreed>() {
+    class DogBreedComparator : DiffUtil.ItemCallback<DogImage>() {
 
         override fun areItemsTheSame(
-            oldItem: SubBreed,
-            newItem: SubBreed
+            oldItem: DogImage,
+            newItem: DogImage
         ) =
             oldItem.url == newItem.url
 
         override fun areContentsTheSame(
-            oldItem: SubBreed,
-            newItem: SubBreed
+            oldItem: DogImage,
+            newItem: DogImage
         ) =
             oldItem == newItem
 
@@ -68,10 +68,10 @@ class BreedGalleryAdapter :
         private val tvErrorLoadingImage: TextView = binding.tvErrorLoadingImage
         //endregion
 
-        fun bind(subBreed: SubBreed) {
+        fun bind(dogImage: DogImage) {
 
             Picasso.get()
-                .load(subBreed.url)
+                .load(dogImage.url)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .centerCrop()

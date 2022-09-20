@@ -22,12 +22,6 @@ abstract class BaseFragment<Binding : ViewBinding> : Fragment() {
     //endregion
 
     //region Fragment Life-Cycle
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            initArgs(it)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,8 +46,6 @@ abstract class BaseFragment<Binding : ViewBinding> : Fragment() {
     abstract fun inflateBinding(layoutInflater: LayoutInflater): Binding
 
     abstract fun observeViewModel()
-
-    open fun initArgs(arguments: Bundle) {}
 
     open fun initViews() {}
 

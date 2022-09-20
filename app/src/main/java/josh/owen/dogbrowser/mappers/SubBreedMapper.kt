@@ -1,14 +1,13 @@
 package josh.owen.dogbrowser.mappers
 
-import josh.owen.dogbrowser.data.SubBreed
+import josh.owen.dogbrowser.data.DogImage
 import josh.owen.dogbrowser.retrofit.apis.dog.responses.DogBreedImagesApiResponse
 import javax.inject.Inject
 
 class SubBreedMapper @Inject constructor() :
-    Function1<DogBreedImagesApiResponse, List<SubBreed>> {
-    override fun invoke(rawDogBreedResponse: DogBreedImagesApiResponse): List<SubBreed> {
+    Function1<DogBreedImagesApiResponse, List<DogImage>> {
+    override fun invoke(rawDogBreedResponse: DogBreedImagesApiResponse): List<DogImage> {
         return rawDogBreedResponse.listOfDogImageUrls
-            .take(10)
-            .map { SubBreed(it) }
+            .map { DogImage(it) }
     }
 }

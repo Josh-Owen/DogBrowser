@@ -1,13 +1,13 @@
 package josh.owen.dogbrowser.tests.mappers
 
 import josh.owen.dogbrowser.base.BaseUnitTest
-import josh.owen.dogbrowser.data.SubBreed
+import josh.owen.dogbrowser.data.DogImage
 import josh.owen.dogbrowser.mappers.SubBreedMapper
 import josh.owen.dogbrowser.retrofit.apis.dog.responses.DogBreedImagesApiResponse
 import junit.framework.TestCase.*
 import org.junit.Test
 
-class SubBreedMapperShould : BaseUnitTest() {
+class DogImageMapperShould : BaseUnitTest() {
 
     private val mapper = SubBreedMapper()
 
@@ -61,33 +61,23 @@ class SubBreedMapperShould : BaseUnitTest() {
             dogImageURL9,
         )
 
-    private val upperLimitApiResponse: DogBreedImagesApiResponse =
-        DogBreedImagesApiResponse(preProcessedUrlsUpperLimit, true)
-    private val upperLimitMappedResponse = mapper.invoke(upperLimitApiResponse)
-
-
     private val preProcessedApiResponse: DogBreedImagesApiResponse =
         DogBreedImagesApiResponse(preProcessedUrls, true)
 
     private val mappedResponse = mapper.invoke(preProcessedApiResponse)
 
-    private val expectedResponse: List<SubBreed> = listOf(
-        SubBreed(dogImageURL0),
-        SubBreed(dogImageURL1),
-        SubBreed(dogImageURL2),
-        SubBreed(dogImageURL3),
-        SubBreed(dogImageURL4),
-        SubBreed(dogImageURL5),
-        SubBreed(dogImageURL6),
-        SubBreed(dogImageURL7),
-        SubBreed(dogImageURL8),
-        SubBreed(dogImageURL9),
+    private val expectedResponse: List<DogImage> = listOf(
+        DogImage(dogImageURL0),
+        DogImage(dogImageURL1),
+        DogImage(dogImageURL2),
+        DogImage(dogImageURL3),
+        DogImage(dogImageURL4),
+        DogImage(dogImageURL5),
+        DogImage(dogImageURL6),
+        DogImage(dogImageURL7),
+        DogImage(dogImageURL8),
+        DogImage(dogImageURL9),
     )
-
-    @Test
-    fun doesReturnCorrectAmountOfSubBreedsIfApiExceedsMaximum() {
-        assertTrue(upperLimitMappedResponse.size == 10)
-    }
 
     @Test
     fun hasExpectedDataPreMapping() {
@@ -96,7 +86,7 @@ class SubBreedMapperShould : BaseUnitTest() {
 
     @Test
     fun doesMapIncorrectly() {
-        assertNotSame(listOf<SubBreed>(), expectedResponse)
+        assertNotSame(listOf<DogImage>(), expectedResponse)
     }
 
     @Test

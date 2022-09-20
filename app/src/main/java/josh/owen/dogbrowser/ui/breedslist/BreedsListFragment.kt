@@ -55,6 +55,7 @@ class BreedsListFragment : BaseFragment<FragmentBreedListBinding>() {
 
                 launch {
                     viewModel
+                        .outputs
                         .fetchUiState()
                         .collectLatest { state ->
                             binding.lavLoadingBreedNames.displayIfTrue(state is BreedListPageState.Loading)

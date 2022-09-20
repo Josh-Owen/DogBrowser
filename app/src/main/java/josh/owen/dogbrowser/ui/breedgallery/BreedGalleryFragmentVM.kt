@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseViewModel
+import josh.owen.dogbrowser.base.DEFAULT_NUMBER_OF_DOGS_IN_GALLERY
 import josh.owen.dogbrowser.data.DogBreed
 import josh.owen.dogbrowser.dispatchers.DispatchersProvider
 import josh.owen.dogbrowser.repositories.DogRepository
@@ -60,7 +61,7 @@ class BreedGalleryFragmentVM @Inject constructor(
     override fun fetchDogBreedImages() {
         _uiState.value = BreedGalleryPageState.Loading
         viewModelScope.launch(dispatchers.io) {
-            dogRepository.fetchSpecifiedBreedImages(_selectedDogBreed.value.breedName)
+            dogRepository.fetchSpecifiedBreedImages(DEFAULT_NUMBER_OF_DOGS_IN_GALLERY, _selectedDogBreed.value.breedName)
                 .catch {
                     _uiState.value =
                         BreedGalleryPageState.Error(

@@ -1,7 +1,7 @@
 package josh.owen.dogbrowser.repositories
 
 import josh.owen.dogbrowser.data.DogBreed
-import josh.owen.dogbrowser.data.SubBreed
+import josh.owen.dogbrowser.data.DogImage
 import josh.owen.dogbrowser.mappers.DogBreedMapper
 import josh.owen.dogbrowser.mappers.SubBreedMapper
 import josh.owen.dogbrowser.retrofit.apis.dog.DogAPI
@@ -42,9 +42,9 @@ class DogRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchSpecifiedBreedImages(dogBreed: String): Flow<ApiResult<List<SubBreed>>> {
+    override suspend fun fetchSpecifiedBreedImages(numberOfDogToDisplayInGallery : Int, dogBreed: String): Flow<ApiResult<List<DogImage>>> {
         return flow {
-            val apiResponse = dogApi.getListOfImagesByBreed(dogBreed)
+            val apiResponse = dogApi.getListOfImagesByBreed(dogBreed, numberOfDogToDisplayInGallery)
             val apiResponseBody = apiResponse.body()
 
             if (apiResponse.isSuccessful && apiResponseBody != null) {

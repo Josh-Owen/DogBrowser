@@ -1,8 +1,9 @@
 package josh.owen.dogbrowser.tests.repositories
 
 import josh.owen.dogbrowser.base.BaseUnitTest
+import josh.owen.dogbrowser.base.DEFAULT_NUMBER_OF_DOGS_IN_GALLERY
 import josh.owen.dogbrowser.data.DogBreed
-import josh.owen.dogbrowser.data.SubBreed
+import josh.owen.dogbrowser.data.DogImage
 import josh.owen.dogbrowser.mappers.DogBreedMapper
 import josh.owen.dogbrowser.mappers.SubBreedMapper
 import josh.owen.dogbrowser.repositories.DogRepositoryImpl
@@ -46,7 +47,7 @@ class DogRepositoryShould : BaseUnitTest() {
     private val expectedDogBreedNamesResponse: Response<DogBreedsApiResponse> =
         Response.success(expectedDogBreedNamesAPIResponseRaw)
 
-    private val listOfDogImageUrls: List<SubBreed> = mock()
+    private val listOfDogImageUrls: List<DogImage> = mock()
 
     private val dogBreedImagesExpectedResponse: DogBreedImagesApiResponse = mock()
 
@@ -95,7 +96,7 @@ class DogRepositoryShould : BaseUnitTest() {
     @Test
     fun doesFetchSpecifiedDogBreedImagesPropagateSuccessfulResponse() = runTest {
         fetchSpecifiedDogBreedImagesSuccess()
-        val response = repository.fetchSpecifiedBreedImages(specifiedDogBreed).first()
+        val response = repository.fetchSpecifiedBreedImages(10, specifiedDogBreed).first()
         assertTrue(response is ApiSuccess && response.data == listOfDogImageUrls)
     }
 
@@ -103,7 +104,7 @@ class DogRepositoryShould : BaseUnitTest() {
     @Test
     fun doesFetchSpecifiedDogBreedImagesPropagateGenericException() = runTest {
         fetchSpecifiedDogBreedImagesGenericException()
-        val response = repository.fetchSpecifiedBreedImages(specifiedDogBreed).first()
+        val response = repository.fetchSpecifiedBreedImages(10, specifiedDogBreed).first()
         assertTrue((response is ApiException) && genericRuntimeException.message == response.exception.message)
     }
 
@@ -111,7 +112,7 @@ class DogRepositoryShould : BaseUnitTest() {
     @Test
     fun doesFetchSpecifiedDogBreedImagesPropagateApiError() = runTest {
         fetchSpecifiedDogBreedImagesApiError()
-        val response = repository.fetchSpecifiedBreedImages(specifiedDogBreed).first()
+        val response = repository.fetchSpecifiedBreedImages(10, specifiedDogBreed).first()
         assertTrue((response is ApiError) && response.code != apiSuccessCode)
     }
 
@@ -128,7 +129,7 @@ class DogRepositoryShould : BaseUnitTest() {
     @Test
     fun doesFetchDogBreedImagesDelegateMappingToMapper() = runTest {
         fetchSpecifiedDogBreedImagesSuccess()
-        repository.fetchSpecifiedBreedImages(specifiedDogBreed).first()
+        repository.fetchSpecifiedBreedImages(10, specifiedDogBreed).first()
         Mockito.verify(subBreedMapper, times(1)).invoke(dogBreedImagesExpectedResponse)
     }
 
@@ -137,13 +138,13 @@ class DogRepositoryShould : BaseUnitTest() {
     //region Test Cases
     private suspend fun fetchSpecifiedDogBreedImagesGenericException() {
         whenever(
-            api.getListOfImagesByBreed(specifiedDogBreed)
+            api.getListOfImagesByBreed(specifiedDogBreed, 10)
         ).thenThrow(genericRuntimeException)
     }
 
     private suspend fun fetchSpecifiedDogBreedImagesSuccess() {
         whenever(
-            api.getListOfImagesByBreed(specifiedDogBreed)
+            api.getListOfImagesByBreed(specifiedDogBreed, DEFAULT_NUMBER_OF_DOGS_IN_GALLERY)
         ).thenReturn(expectedDogBreedImagesResponse)
 
         whenever(subBreedMapper.invoke(dogBreedImagesExpectedResponse)).thenReturn(
@@ -153,7 +154,7 @@ class DogRepositoryShould : BaseUnitTest() {
 
     private suspend fun fetchSpecifiedDogBreedImagesApiError() {
         whenever(
-            api.getListOfImagesByBreed(specifiedDogBreed)
+            api.getListOfImagesByBreed(specifiedDogBreed, DEFAULT_NUMBER_OF_DOGS_IN_GALLERY)
         ).thenReturn(Response.error(apiErrorCode, "".toResponseBody()))
     }
 
