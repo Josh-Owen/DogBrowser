@@ -85,10 +85,18 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
                                 is BreedGalleryPageState.Success -> {
                                     galleryAdapter.submitList(state.imageUrls)
                                 }
-                                is BreedGalleryPageState.Error -> {
+                                is BreedGalleryPageState.APIError -> {
                                     Snackbar.make(
                                         binding.root,
                                         state.message,
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
+                                }
+
+                                is BreedGalleryPageState.GenericNetworkError -> {
+                                    Snackbar.make(
+                                        binding.root,
+                                        R.string.generic_network_error,
                                         Snackbar.LENGTH_LONG
                                     ).show()
                                 }
@@ -97,7 +105,7 @@ class BreedGalleryFragment : BaseFragment<FragmentBreedGalleryBinding>() {
                                 }
                             }
                             binding.lavLoadingBreedImages.displayIfTrue(state is BreedGalleryPageState.Loading)
-                            binding.btnRetryLoadImageUrls.displayIfTrue(state is BreedGalleryPageState.Error)
+                            binding.btnRetryLoadImageUrls.displayIfTrue(state is BreedGalleryPageState.APIError || state is BreedGalleryPageState.GenericNetworkError)
                         }
                 }
             }

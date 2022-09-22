@@ -1,9 +1,7 @@
 package josh.owen.dogbrowser.ui.breedslist
 
-import android.app.Application
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseViewModel
 import josh.owen.dogbrowser.dispatchers.DispatchersProvider
 import josh.owen.dogbrowser.repositories.DogRepository
@@ -33,10 +31,9 @@ interface BreedsListFragmentVMOutputs {
 
 @HiltViewModel
 class BreedsListFragmentVM @Inject constructor(
-    application: Application,
     private val dispatchers: DispatchersProvider,
     private val dogRepository: DogRepository
-) : BaseViewModel(application), BreedsListFragmentVMInputs, BreedsListFragmentVMOutputs {
+) : BaseViewModel(), BreedsListFragmentVMInputs, BreedsListFragmentVMOutputs {
 
     //region Variables & Class Members
 
@@ -66,10 +63,7 @@ class BreedsListFragmentVM @Inject constructor(
         viewModelScope.launch(dispatchers.io) {
             dogRepository.fetchDogBreeds()
                 .catch {
-                    _uiState.value =
-                        BreedListPageState.Error(
-                            it.message.toString()
-                        )
+                    _uiState.value = BreedListPageState.GenericNetworkError
                 }
                 .collectLatest {
                     delay(500) // Add delay to avoid progress bar flicker
@@ -78,18 +72,10 @@ class BreedsListFragmentVM @Inject constructor(
                             _uiState.value = BreedListPageState.Success(it.data)
                         }
                         is ApiError -> {
-                            _uiState.value = BreedListPageState.Error(
-                                getApplication<Application>().getString(
-                                    R.string.generic_network_error
-                                )
-                            )
+                            _uiState.value = BreedListPageState.APIError(it.message ?: "")
                         }
                         is ApiException -> {
-                            _uiState.value = BreedListPageState.Error(
-                                getApplication<Application>().getString(
-                                    R.string.generic_network_error
-                                )
-                            )
+                            _uiState.value = BreedListPageState.GenericNetworkError
                         }
                     }
                 }

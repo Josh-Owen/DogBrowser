@@ -2,9 +2,7 @@
 
 package josh.owen.dogbrowser.tests.viewmodels
 
-import android.app.Application
 import app.cash.turbine.test
-import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseUnitTest
 import josh.owen.dogbrowser.data.DogBreed
 import josh.owen.dogbrowser.data.DogImage
@@ -31,8 +29,6 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
 
     private val repository: DogRepositoryImpl = mock()
 
-    private var application: Application = mock()
-
     private lateinit var viewModel: BreedGalleryFragmentVM
 
     private val selectedDogBreed = DogBreed("Dachshund", listOf())
@@ -51,7 +47,7 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
 
     @Before
     fun setup() {
-        viewModel = BreedGalleryFragmentVM(application, testDispatchers, repository)
+        viewModel = BreedGalleryFragmentVM(testDispatchers, repository)
     }
 
 
@@ -99,20 +95,20 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            assertTrue(emission is BreedGalleryPageState.Error && emission.message == genericNetworkMessage)
+            assertTrue(emission is BreedGalleryPageState.APIError && emission.message == apiErrorMessage)
             cancelAndConsumeRemainingEvents()
         }
     }
 
     @Test
     fun isGenericExceptionStatePropagated() = runTest(testDispatchers.io) {
-        mockExceptionCase()
+        mockAPIExceptionCase()
         viewModel.inputs.selectedDogBreed(selectedDogBreed)
         viewModel.inputs.fetchDogBreedImages()
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            assertTrue(emission is BreedGalleryPageState.Error && emission.message == genericRuntimeException.message)
+            assertTrue(emission is BreedGalleryPageState.GenericNetworkError)
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -120,32 +116,25 @@ class BreedGalleryFragmentVMShould : BaseUnitTest() {
     //endregion
 
     //region Test Cases
-    private suspend fun mockSuccessfulCase() {
-        whenever(repository.fetchSpecifiedBreedImages(10, selectedDogBreed.breedName)).thenReturn(flow {
-            emit(ApiSuccess(expectedDogImageResponse))
-        })
+    private fun mockSuccessfulCase() {
+        whenever(repository.fetchSpecifiedBreedImages(10, selectedDogBreed.breedName)).thenReturn(
+            flow {
+                emit(ApiSuccess(expectedDogImageResponse))
+            })
     }
 
-    private suspend fun mockExceptionCase() {
-        whenever(repository.fetchSpecifiedBreedImages(10, selectedDogBreed.breedName)).thenReturn(flow {
-            emit(ApiException(genericRuntimeException))
-        })
-        whenever(
-            application.getString(
-                R.string.generic_network_error
-            )
-        ).thenReturn(genericNetworkMessage)
+    private fun mockAPIExceptionCase() {
+        whenever(repository.fetchSpecifiedBreedImages(10, selectedDogBreed.breedName)).thenReturn(
+            flow {
+                emit(ApiException(genericRuntimeException))
+            })
     }
 
-    private suspend fun mockApiErrorCase() {
-        whenever(repository.fetchSpecifiedBreedImages(10, selectedDogBreed.breedName)).thenReturn(flow {
-            emit(ApiError(420, apiErrorMessage))
-        })
-        whenever(
-            application.getString(
-                R.string.generic_network_error
-            )
-        ).thenReturn(genericNetworkMessage)
+    private fun mockApiErrorCase() {
+        whenever(repository.fetchSpecifiedBreedImages(10, selectedDogBreed.breedName)).thenReturn(
+            flow {
+                emit(ApiError(420, apiErrorMessage))
+            })
     }
     //endregion
 

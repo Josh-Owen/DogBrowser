@@ -16,6 +16,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.core.base.BaseUITest
 import josh.owen.dogbrowser.dispatchers.ErrorDispatcher
+import josh.owen.dogbrowser.dispatchers.ErrorDispatcher.Companion.DISPATCHER_GENERIC_ERROR
 import josh.owen.dogbrowser.utils.nthChildOf
 import josh.owen.dogbrowser.utils.views.ViewVisibilityIdlingResource
 import org.hamcrest.core.AllOf
@@ -103,7 +104,7 @@ class BreedsListFragmentTest : BaseUITest() {
     fun doesDisplaySnackBarAfterFailingToFetchNames() {
         mockWebServer.dispatcher = ErrorDispatcher()
         Thread.sleep(1000)
-        assertDisplayed(R.string.generic_network_error)
+        assertDisplayed(DISPATCHER_GENERIC_ERROR)
     }
 
     @Test

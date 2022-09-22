@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseFragment
 import josh.owen.dogbrowser.data.DogBreed
 import josh.owen.dogbrowser.databinding.FragmentBreedListBinding
@@ -59,15 +60,22 @@ class BreedsListFragment : BaseFragment<FragmentBreedListBinding>() {
                         .fetchUiState()
                         .collectLatest { state ->
                             binding.lavLoadingBreedNames.displayIfTrue(state is BreedListPageState.Loading)
-                            binding.btnRetryLoadingBreedList.displayIfTrue(state is BreedListPageState.Error)
+                            binding.btnRetryLoadingBreedList.displayIfTrue(state is BreedListPageState.GenericNetworkError || state is BreedListPageState.APIError)
                             when (state) {
                                 is BreedListPageState.Success -> {
                                     breedsAdapter.submitList(state.data)
                                 }
-                                is BreedListPageState.Error -> {
+                                is BreedListPageState.APIError -> {
                                     Snackbar.make(
                                         binding.root,
                                         state.message,
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
+                                }
+                                is BreedListPageState.GenericNetworkError -> {
+                                    Snackbar.make(
+                                        binding.root,
+                                        R.string.generic_network_error,
                                         Snackbar.LENGTH_LONG
                                     ).show()
                                 }

@@ -1,6 +1,7 @@
 package josh.owen.dogbrowser.dispatchers
 
 import android.net.Uri
+import josh.owen.dogbrowser.base.DEFAULT_NUMBER_OF_DOGS_IN_GALLERY
 import josh.owen.dogbrowser.core.SELECTED_BREED
 import josh.owen.dogbrowser.utils.fileio.FileReader
 import okhttp3.mockwebserver.Dispatcher
@@ -10,7 +11,7 @@ import okhttp3.mockwebserver.RecordedRequest
 class SuccessDispatcher : Dispatcher() {
 
     private val responseFilesByPath: Map<String, String> = mapOf(
-        "/breed/$SELECTED_BREED/images" to "network_files/Fetchdogbreedimages200.json",
+        "/breed/$SELECTED_BREED/images/random/$DEFAULT_NUMBER_OF_DOGS_IN_GALLERY" to "network_files/Fetchdogbreedimages200.json",
         "/breeds/list/all" to "network_files/Fetchdogbreeds200.json"
     )
 

@@ -6,6 +6,9 @@ import josh.owen.dogbrowser.retrofit.wrappers.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 interface DogRepository {
-     fun fetchDogBreeds(): Flow<ApiResult<List<DogBreed>>>
-     fun fetchSpecifiedBreedImages(numberOfDogToDisplayInGallery : Int, dogBreed: String): Flow<ApiResult<List<DogImage>>>
+    fun fetchDogBreeds(): Flow<ApiResult<List<DogBreed>>>
+    fun fetchSpecifiedBreedImages(
+        numberOfDogToDisplayInGallery: Int,
+        dogBreed: String
+    ): Flow<ApiResult<List<DogImage>>>
 }

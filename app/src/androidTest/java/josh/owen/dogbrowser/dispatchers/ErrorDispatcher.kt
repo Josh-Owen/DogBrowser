@@ -8,6 +8,10 @@ class ErrorDispatcher : Dispatcher() {
     override fun dispatch(request: RecordedRequest): MockResponse {
         return MockResponse()
             .setResponseCode(404)
-            .setBody("Error")
+            .setBody(DISPATCHER_GENERIC_ERROR)
+    }
+
+    companion object {
+        const val DISPATCHER_GENERIC_ERROR = "Client Error"
     }
 }

@@ -16,9 +16,12 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import josh.owen.dogbrowser.R
+import josh.owen.dogbrowser.base.DEFAULT_NUMBER_OF_DOGS_IN_GALLERY
 import josh.owen.dogbrowser.core.SELECTED_BREED
 import josh.owen.dogbrowser.core.base.BaseUITest
+import josh.owen.dogbrowser.dispatchers.ErrorDispatcher.Companion.DISPATCHER_GENERIC_ERROR
 import josh.owen.dogbrowser.dispatchers.LoadGalleryErrorDispatcher
+import josh.owen.dogbrowser.dispatchers.SuccessDispatcher
 import josh.owen.dogbrowser.utils.nthChildOf
 import josh.owen.dogbrowser.utils.views.ViewVisibilityIdlingResource
 import org.hamcrest.core.AllOf
@@ -90,7 +93,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
         mockWebServer.dispatcher = LoadGalleryErrorDispatcher()
         navigateToSelectedBreedGallery()
         Thread.sleep(1000)
-        assertDisplayed(R.string.generic_network_error)
+        assertDisplayed(DISPATCHER_GENERIC_ERROR)
     }
 
 
@@ -100,12 +103,12 @@ class BreedGalleryFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedImages),
+                    it.findViewById (R.id.lavLoadingBreedImages),
                     View.GONE
                 )
             )
         }
-        assertRecyclerViewItemCount(R.id.rvDogBreedImages, 10)
+        assertRecyclerViewItemCount(R.id.rvDogBreedImages, DEFAULT_NUMBER_OF_DOGS_IN_GALLERY)
     }
 
     @Test
@@ -138,7 +141,7 @@ class BreedGalleryFragmentTest : BaseUITest() {
         activityRule.scenario.onActivity {
             idlingRegistry.register(
                 ViewVisibilityIdlingResource(
-                    it.findViewById<ProgressBar>(R.id.lavLoadingBreedNames),
+                    it.findViewById(R.id.lavLoadingBreedNames),
                     View.GONE
                 )
             )
@@ -146,10 +149,10 @@ class BreedGalleryFragmentTest : BaseUITest() {
 
         onView(
             AllOf.allOf(
-                ViewMatchers.withId(R.id.tvDogBreed),
+                withId(R.id.tvDogBreed),
                 ViewMatchers.isDescendantOfA(
                     nthChildOf(
-                        ViewMatchers.withId(R.id.rvDogBreedNames),
+                        withId(R.id.rvDogBreedNames),
                         1
                     )
                 )

@@ -14,7 +14,7 @@ interface DogAPI {
     @GET(DOG_API_FETCH_IMAGES_BY_BREED)
     suspend fun getListOfImagesByBreed(
         @Path("selectedDogBreed") breedName: String,
-        @Path("numberOfDogs") numberOfDogs : Int
+        @Path("numberOfDogs") numberOfDogs: Int
     ): Response<DogBreedImagesApiResponse>
 
 }

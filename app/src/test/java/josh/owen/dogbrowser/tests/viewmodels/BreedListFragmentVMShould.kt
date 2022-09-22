@@ -2,9 +2,7 @@
 
 package josh.owen.dogbrowser.tests.viewmodels
 
-import android.app.Application
 import app.cash.turbine.test
-import josh.owen.dogbrowser.R
 import josh.owen.dogbrowser.base.BaseUnitTest
 import josh.owen.dogbrowser.data.DogBreed
 import josh.owen.dogbrowser.repositories.DogRepositoryImpl
@@ -14,6 +12,7 @@ import josh.owen.dogbrowser.retrofit.wrappers.ApiSuccess
 import josh.owen.dogbrowser.ui.breedslist.BreedListPageState
 import josh.owen.dogbrowser.ui.breedslist.BreedsListFragmentVM
 import junit.framework.TestCase
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
@@ -28,10 +27,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
 
     private val repository: DogRepositoryImpl = mock()
 
-    private var application: Application = mock()
-
     private lateinit var viewModel: BreedsListFragmentVM
-
 
     private val genericNetworkMessage: String = "Generic Network Message"
 
@@ -47,7 +43,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
 
     @Before
     fun setup() {
-        viewModel = BreedsListFragmentVM(application, testDispatchers, repository)
+        viewModel = BreedsListFragmentVM(testDispatchers, repository)
     }
 
 
@@ -57,7 +53,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
         viewModel.inputs.loadBreedsList()
         viewModel.outputs.fetchUiState().test {
             val emission = awaitItem()
-            TestCase.assertTrue(emission is BreedListPageState.Loading)
+            assertTrue(emission is BreedListPageState.Loading)
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -69,7 +65,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            TestCase.assertTrue(emission is BreedListPageState.Success && emission.data == expectedBreedNamesResponse)
+            assertTrue(emission is BreedListPageState.Success && emission.data == expectedBreedNamesResponse)
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -81,7 +77,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            TestCase.assertTrue(emission is BreedListPageState.Error && emission.message == genericNetworkMessage)
+            assertTrue(emission is BreedListPageState.APIError && emission.message == apiErrorMessage)
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -93,7 +89,7 @@ class BreedListFragmentVMShould : BaseUnitTest() {
         viewModel.outputs.fetchUiState().test {
             awaitItem() // Ignore loading state
             val emission = awaitItem()
-            TestCase.assertTrue(emission is BreedListPageState.Error && emission.message == genericRuntimeException.message)
+            TestCase.assertTrue(emission is BreedListPageState.GenericNetworkError)
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -110,22 +106,12 @@ class BreedListFragmentVMShould : BaseUnitTest() {
         whenever(repository.fetchDogBreeds()).thenReturn(flow {
             emit(ApiException(genericRuntimeException))
         })
-        whenever(
-            application.getString(
-                R.string.generic_network_error
-            )
-        ).thenReturn(genericNetworkMessage)
     }
 
     private suspend fun mockApiErrorCase() {
         whenever(repository.fetchDogBreeds()).thenReturn(flow {
             emit(ApiError(420, apiErrorMessage))
         })
-        whenever(
-            application.getString(
-                R.string.generic_network_error
-            )
-        ).thenReturn(genericNetworkMessage)
     }
     //endregion
 

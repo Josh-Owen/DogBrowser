@@ -42,7 +42,10 @@ class DogRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchSpecifiedBreedImages(numberOfDogToDisplayInGallery : Int, dogBreed: String): Flow<ApiResult<List<DogImage>>> {
+    override fun fetchSpecifiedBreedImages(
+        numberOfDogToDisplayInGallery: Int,
+        dogBreed: String
+    ): Flow<ApiResult<List<DogImage>>> {
         return flow {
             val apiResponse = dogApi.getListOfImagesByBreed(dogBreed, numberOfDogToDisplayInGallery)
             val apiResponseBody = apiResponse.body()
